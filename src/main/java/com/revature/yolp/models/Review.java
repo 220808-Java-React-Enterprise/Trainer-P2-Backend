@@ -1,22 +1,32 @@
 package com.revature.yolp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "reviews")
 public class Review {
+    @Id
     private String id;
+    @Column(name = "comment", nullable = false)
     private String comment;
+    @Column(name = "rating", nullable = false)
     private int rating;
-    private String user_id;
-    private String restaurant_id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
 
     public Review() {
 
     }
 
-    public Review(String id, String comment, int rating, String user_id, String restaurant_id) {
+    public Review(String id, String comment, int rating) {
         this.id = id;
         this.comment = comment;
         this.rating = rating;
-        this.user_id = user_id;
-        this.restaurant_id = restaurant_id;
     }
 
     public String getId() {
@@ -43,30 +53,12 @@ public class Review {
         this.rating = rating;
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public String getRestaurant_id() {
-        return restaurant_id;
-    }
-
-    public void setRestaurant_id(String restaurant_id) {
-        this.restaurant_id = restaurant_id;
-    }
-
     @Override
     public String toString() {
         return "Review{" +
                 "id='" + id + '\'' +
                 ", comment='" + comment + '\'' +
                 ", rating=" + rating +
-                ", user_id='" + user_id + '\'' +
-                ", restaurant_id='" + restaurant_id + '\'' +
                 '}';
     }
 }
