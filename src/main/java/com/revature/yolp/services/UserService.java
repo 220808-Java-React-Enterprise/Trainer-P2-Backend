@@ -1,22 +1,27 @@
 package com.revature.yolp.services;
 
-import com.revature.yolp.daos.UserDAO;
 import com.revature.yolp.dtos.requests.LoginRequest;
 import com.revature.yolp.dtos.requests.NewUserRequest;
 import com.revature.yolp.dtos.responses.Principal;
 import com.revature.yolp.models.User;
+import com.revature.yolp.repositories.UserRepository;
 import com.revature.yolp.utils.custom_exceptions.AuthenticationException;
 import com.revature.yolp.utils.custom_exceptions.InvalidRequestException;
 import com.revature.yolp.utils.custom_exceptions.ResourceConflictException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserService {
-    private final UserDAO userDAO;
+    //@Autowired
+    private final UserRepository userRepo;
 
-    public UserService(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserService(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     public User register(NewUserRequest request) {
@@ -27,7 +32,7 @@ public class UserService {
                 if (isValidPassword(request.getPassword1())) {
                     if (isSamePassword(request.getPassword1(), request.getPassword2())) {
                         user = new User(UUID.randomUUID().toString(), request.getUsername(), request.getPassword1());
-                        userDAO.save(user);
+                        userRepo.save(user);
                     }
                 }
             }
@@ -37,22 +42,22 @@ public class UserService {
     }
 
     public Principal login(LoginRequest request) {
-        User user = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
+        User user = userRepo.findUserByUsernameAndPassword(request.getUsername(), request.getPassword());
         if (user == null) throw new AuthenticationException("\nIncorrect username or password :(");
         return new Principal(user.getId(), user.getUsername(), user.getRole());
     }
 
-    public User getUserById(String id) {
-        return userDAO.getById(id);
+    public Optional<User> getUserById(String id) {
+        return userRepo.findById(id);
     }
 
     public User getUserByUsername(String username) {
-        if (userDAO.getUserByUsername(username) == null) throw new InvalidRequestException("\nInvalid request! There is no user by that username");
-        return userDAO.getUserByUsername(username);
+        if (userRepo.findUserByUsername(username) == null) throw new InvalidRequestException("\nInvalid request! There is no user by that username");
+        return userRepo.findUserByUsername(username);
     }
 
     public List<User> getAllUsers() {
-        return userDAO.getAll();
+        return (List<User>) userRepo.findAll();
     }
 
     public boolean isValidUsername(String username) {
@@ -66,7 +71,7 @@ public class UserService {
     }
 
     public boolean isDuplicateUsername(String username) {
-        if (userDAO.getUsername(username) != null) throw new ResourceConflictException("\nSorry, " + username + " already been taken :(");
+        if (userRepo.findUsernameByUsername(username) != null) throw new ResourceConflictException("\nSorry, " + username + " already been taken :(");
         return false;
     }
 
