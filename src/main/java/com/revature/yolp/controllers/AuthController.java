@@ -11,9 +11,4 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
-    @PostMapping(consumes = "application/json")
-    public void login(@RequestBody LoginRequest request, HttpServletResponse resp) {
-        resp.setHeader("Authorization", token); // token (need implementation but you get the gist)
-    }
 }
