@@ -5,18 +5,18 @@ import com.revature.yolp.utils.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
 public class TokenService {
+    @Autowired
     private JwtConfig jwtConfig;
-
     public TokenService() {
         super();
     }
-
     public TokenService(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
     }
