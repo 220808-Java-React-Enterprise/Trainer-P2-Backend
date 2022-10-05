@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
     private final TokenService tokenService;
@@ -23,17 +23,18 @@ public class AuthController {
     }
 
     @CrossOrigin(exposedHeaders = "authorization")
-    @PostMapping(value = "/auth", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
+    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
         Principal principal = userService.login(request);
         String token = tokenService.generateToken(principal);
         resp.setHeader("authorization", token);
         return principal;
     }
 
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody AuthenticationException handleAuthenticationException(AuthenticationException e) {
+    public AuthenticationException handleAuthenticationException(AuthenticationException e) {
         return e;
     }
 }
