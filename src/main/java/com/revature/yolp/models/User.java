@@ -3,6 +3,7 @@ package com.revature.yolp.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,7 +40,6 @@ public class User {
     private List<Review> reviews;
 
     public User() {
-
     }
 
     public User(String id, String username, String password) {
@@ -53,6 +53,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String id, String username, String password, String role, List<Review> reviews) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.reviews = reviews;
     }
 
     public String getId() {
@@ -87,8 +95,12 @@ public class User {
         this.role = role;
     }
 
-    public String toFileString() {
-        return id + ":" + username + ":" + password + ":" + role + "\n";
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override
@@ -98,6 +110,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", reviews=" + reviews +
                 '}';
     }
 }

@@ -1,21 +1,23 @@
 package com.revature.yolp.services;
 
-import com.revature.yolp.models.Review;
+import com.revature.yolp.dtos.requests.NewReviewRequest;
+import com.revature.yolp.repositories.ReviewRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.UUID;
 
+@Service
 public class ReviewService {
-//    private final ReviewDAO reviewDAO;
-//
-//    public ReviewService(ReviewDAO reviewDAO) {
-//        this.reviewDAO = reviewDAO;
-//    }
-//
-//    public void saveReview(Review review) {
-//        reviewDAO.save(review);
-//    }
-//
-//    public List<Review> getAllReviewsByRestaurantId(String id) {
-//        return reviewDAO.getAllByRestaurantId(id);
-//    }
+    private final ReviewRepository reviewRepository;
+
+    public ReviewService(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
+
+
+    @Transactional
+    public void saveReview(NewReviewRequest req) {
+        reviewRepository.saveReview(UUID.randomUUID().toString(), req.getRating(), req.getComment(), req.getUsername(), req.getRestaurant_id(), req.getUser_id());
+    }
 }

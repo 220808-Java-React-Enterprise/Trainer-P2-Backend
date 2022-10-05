@@ -1,24 +1,49 @@
 package com.revature.yolp.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "restaurants")
 public class Restaurant {
+    @Id
     private String id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "street", nullable = false)
     private String street;
+    @Column(name = "city", nullable = false)
     private String city;
+    @Column(name = "state", nullable = false)
     private String state;
+    @Column(name = "zipcode", nullable = false)
     private String zipcode;
 
-    public Restaurant() {
+    @Column(name = "img", nullable = false)
+    private String img;
 
+    @OneToMany(
+            mappedBy = "restaurant",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Review> reviews;
+
+    public Restaurant() {
     }
 
-    public Restaurant(String id, String name, String street, String city, String state, String zipcode) {
+    public Restaurant(String id, String name, String street, String city, String state, String zipcode, String img, List<Review> reviews) {
         this.id = id;
         this.name = name;
         this.street = street;
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+        this.img = img;
+        this.reviews = reviews;
     }
 
     public String getId() {
@@ -69,6 +94,22 @@ public class Restaurant {
         this.zipcode = zipcode;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" +
@@ -78,6 +119,8 @@ public class Restaurant {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
+                ", img='" + img + '\'' +
+                ", reviews=" + reviews +
                 '}';
     }
 }
