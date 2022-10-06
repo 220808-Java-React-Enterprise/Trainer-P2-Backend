@@ -2,6 +2,7 @@ package com.revature.yolp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /*
  * @SpringBootApplication enable this three features:
@@ -10,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Configuration: allow to register extra beans in the context or import additional configuration classes
  */
 @SpringBootApplication
-public class YolpDriver {
+public class YolpDriver extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(YolpDriver.class, args);
     }
