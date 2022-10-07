@@ -8,9 +8,9 @@ spring:
     name: yolp
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${{ secrets.POSTGRESQL_URL }}
+    url: jdbc:postgresql://javareact-220808.cj5sjaw1ccac.us-west-1.rds.amazonaws.com:5432/postgres?currentSchema=yolp
     username: postgres
-    password: ${{ secrets.POSTGRESQL_PASSWORD }}
+    password: revature
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     show-sql: true
