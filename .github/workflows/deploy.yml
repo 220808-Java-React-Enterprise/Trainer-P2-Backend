@@ -1,8 +1,8 @@
-name: Deploy deploy-branch
+name: Deploy main
 on:
   push:
     branches:
-      - deploy
+      - main
 
 jobs:
   build:
