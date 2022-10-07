@@ -1,24 +1,17 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Deployment
+name: Deploy deploy-branch
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - deploy
+
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '8'
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
       - name: Overwrite file
         uses: "DamianReeves/write-file-action@master"
         with:
@@ -26,31 +19,17 @@ jobs:
           write-mode: overwrite
           contents: |
             ${{ secrets.APPLICATION_YAML }}
+
       - name: Build with Maven
         run: mvn clean install
-      - name: Upload JAR
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifact
-          path: target/yolp-servlet-1.0-SNAPSHOT.jar
-  deploy:
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download JAR
-        uses: actions/download-artifact@v2
-        with:
-          name: artifact
-      #Deploy the artifact (JAR) into AWS Beanstalk
+
       - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v13
+        uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          use_existing_version_if_available: false
           application_name: yolp-springboot
           environment_name: Yolpspringboot-env
-          version_label: ${{github.SHA}}
+          version_label: 12345
           region: us-west-1
           deployment_package: yolp-servlet-1.0-SNAPSHOT.jar
