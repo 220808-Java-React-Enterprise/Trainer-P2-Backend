@@ -32,4 +32,4 @@ jobs:
           environment_name: Yolpspringboot-env
           version_label: 12345
           region: us-west-1
-          deployment_package: yolp-servlet-1.0-SNAPSHOT.jar
+          deployment_package: tartget/yolp-servlet-1.0-SNAPSHOT.jar
