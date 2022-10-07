@@ -19,13 +19,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '8'
-      - name: Run Workflow
-        id: write_file
-        uses: timheuer/base64-to-file@v1.1
+      - name: Overwrite file
+        uses: "DamianReeves/write-file-action@master"
         with:
-          fileName: 'application.yml'
-          fileDir: './src/main/resources/'
-          encodedString: ${{ secrets.APPLICATION_YAML }}
+          path: src/main/resources/application.yml
+          write-mode: overwrite
+          contents: |
+            ${{ secrets.APPLICATION_YAML }}
       - name: Build with Maven
         run: mvn clean install
       - name: Upload JAR
