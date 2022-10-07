@@ -1,0 +1,18 @@
+server:
+  port: 5000
+  servlet:
+    context-path: /yolp
+
+spring:
+  application:
+    name: yolp
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://javareact-220808.cj5sjaw1ccac.us-west-1.rds.amazonaws.com:5432/postgres?currentSchema=yolp
+    username: postgres
+    password: revature
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
